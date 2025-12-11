@@ -33,7 +33,27 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Leemos el rol del usuario
+        $role = $request->user()->role_type;
+
+        // 2. Decidimos a dónde enviarlo según su rol
+        switch ($role) {
+            case 'propietario':
+                // Si es propietario, va a su panel de control
+                return redirect()->intended(route('admin.dashboard', absolute: false));
+            
+            case 'vendedor':
+                // Si es vendedor, va directo a registrar ventas
+                return redirect()->intended(route('ventas.create', absolute: false));
+
+            case 'cliente':
+                // Si es cliente, va a su perfil de compras
+                return redirect()->intended(route('cliente.home', absolute: false));
+
+            default:
+                // Si no tiene rol específico (o es admin global), va al dashboard por defecto
+                return redirect()->intended(route('dashboard', absolute: false));
+        }
     }
 
     /**
