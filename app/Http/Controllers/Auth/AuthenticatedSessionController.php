@@ -40,7 +40,7 @@ class AuthenticatedSessionController extends Controller
         switch ($role) {
             case 'propietario':
                 // Si es propietario, va a su panel de control
-                return redirect()->intended(route('admin.dashboard', absolute: false));
+                return redirect()->intended(route('propietario.dashboard', absolute: false));
             
             case 'vendedor':
                 // Si es vendedor, va directo a registrar ventas

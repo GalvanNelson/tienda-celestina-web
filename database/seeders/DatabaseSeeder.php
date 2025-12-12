@@ -78,5 +78,7 @@ class DatabaseSeeder extends Seeder
             'limite_credito' => 5000.00,
             'saldo_actual' => 0.00
         ]);
+        
+        $this->call(InventarioSeeder::class);
     }
 }
