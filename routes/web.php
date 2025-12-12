@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\UnidadMedidaController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,15 +35,18 @@ Route::middleware('auth')->group(function () {
 // -----------------------------------------------------------------------------
 
 // ZONA PROPIETARIOS
-// Solo accesible si role_type === 'propietario'
-Route::middleware(['auth', 'verified', 'role:propietario'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:propietario'])
+    ->prefix('propietario') // <--- AGREGA ESTA LÍNEA
+    ->group(function () {
     
-    Route::get('/admin/dashboard', function () {
-        return Inertia::render('Admin/Dashboard'); 
-    })->name('admin.dashboard');
+    Route::get('/dashboard', function () { // Puedes simplificar esto si usas el prefijo
+        return Inertia::render('Propietario/Dashboard'); 
+    })->name('propietario.dashboard');
 
-    // Aquí podrás agregar más rutas como:
-    // Route::get('/admin/reportes', ...)->name('admin.reportes');
+    // Ahora la URL será /propietario/productos
+    Route::resource('productos', ProductoController::class);
+    Route::resource('categorias', CategoriaController::class);
+    Route::resource('unidades', UnidadMedidaController::class);
 });
 
 // ZONA VENTAS (Vendedores y Propietarios)
