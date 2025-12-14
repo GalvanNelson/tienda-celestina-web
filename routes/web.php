@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UnidadMedidaController;
 use App\Http\Controllers\VendedorController;
+use App\Http\Controllers\ClienteController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -49,6 +50,7 @@ Route::middleware(['auth', 'verified', 'role:propietario'])
     Route::resource('categorias', CategoriaController::class);
     Route::resource('unidades', UnidadMedidaController::class);
     Route::resource('vendedores', VendedorController::class);
+    Route::resource('clientes', ClienteController::class);
 });
 
 // ZONA VENTAS (Vendedores y Propietarios)
