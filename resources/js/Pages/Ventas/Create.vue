@@ -143,6 +143,20 @@ const excedeCredito = computed(() => {
         </template>
 
         <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
+                <div v-if="$page.props.flash.success"
+                    class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                    role="alert">
+                    <strong class="font-bold">¡Éxito! </strong>
+                    <span class="block sm:inline">{{ $page.props.flash.success }}</span>
+                </div>
+
+                <div v-if="$page.props.flash.error"
+                    class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <strong class="font-bold">Error: </strong>
+                    <span class="block sm:inline">{{ $page.props.flash.error }}</span>
+                </div>
+            </div>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
                 <div v-if="vistaActual === 'catalogo'">
@@ -222,14 +236,14 @@ const excedeCredito = computed(() => {
                                         <button @click="cambiarCantidad(index, -1)"
                                             class="px-3 py-1 bg-gray-50 hover:bg-gray-200 text-gray-600 font-bold border-r">-</button>
                                         <span class="px-3 py-1 font-bold min-w-[30px] text-center">{{ item.cantidad
-                                            }}</span>
+                                        }}</span>
                                         <button @click="cambiarCantidad(index, 1)"
                                             class="px-3 py-1 bg-gray-50 hover:bg-gray-200 text-gray-600 font-bold border-l">+</button>
                                     </div>
 
                                     <div class="text-right w-24 hidden sm:block">
                                         <div class="font-bold text-gray-800">{{ (item.precio * item.cantidad).toFixed(2)
-                                            }} Bs
+                                        }} Bs
                                         </div>
                                     </div>
 
@@ -264,10 +278,10 @@ const excedeCredito = computed(() => {
                             <div v-if="clienteInfo" class="mt-2 text-xs p-2 bg-gray-50 rounded border">
                                 <p><strong>Límite Crédito:</strong> {{ clienteInfo.limite_credito }} Bs</p>
                                 <p><strong>Deuda Actual:</strong> <span class="text-red-600">{{ clienteInfo.saldo_actual
-                                        }}
+                                }}
                                         Bs</span></p>
                                 <p><strong>Disponible:</strong> <span class="text-green-600 font-bold">{{
-                                        creditoDisponible.toFixed(2) }} Bs</span></p>
+                                    creditoDisponible.toFixed(2) }} Bs</span></p>
                             </div>
                         </div>
 
