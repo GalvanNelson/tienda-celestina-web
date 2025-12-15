@@ -44,7 +44,7 @@ class AuthenticatedSessionController extends Controller
             
             case 'vendedor':
                 // Si es vendedor, va directo a registrar ventas
-                return redirect()->intended(route('ventas.create', absolute: false));
+                return redirect()->intended(route('vendedor.dashboard', absolute: false));
 
             case 'cliente':
                 // Si es cliente, va a su perfil de compras

@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UnidadMedidaController;
 use App\Http\Controllers\VendedorController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\VentaController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -55,13 +56,17 @@ Route::middleware(['auth', 'verified', 'role:propietario'])
 
 // ZONA VENTAS (Vendedores y Propietarios)
 // Accesible si role_type es 'vendedor' O 'propietario'
-Route::middleware(['auth', 'verified', 'role:propietario,vendedor'])->group(function () {
-    
-    Route::get('/ventas/nueva', function () {
-        return Inertia::render('Ventas/Create');
-    })->name('ventas.create');
+Route::middleware(['auth', 'verified', 'role:propietario,vendedor'])
+->prefix('vendedor') // <--- AGREGA ESTA LÍNEA
+->group(function () {
+
+    Route::get('/dashboard', function () { // Puedes simplificar esto si usas el prefijo
+        return Inertia::render('Vendedor/Dashboard'); 
+    })->name('vendedor.dashboard');
     
     // Aquí irían rutas para ver productos, clientes, etc.
+    // Esto busca create() y store() en tu controlador
+    Route::resource('ventas', VentaController::class)->only(['create', 'store']);  
 });
 
 // ZONA CLIENTES
