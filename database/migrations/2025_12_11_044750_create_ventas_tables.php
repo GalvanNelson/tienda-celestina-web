@@ -64,7 +64,7 @@ return new class extends Migration
         // Detalles Pago Online (Fassil)
         Schema::create('detalles_pago_online', function (Blueprint $table) {
             // Asumiendo que viene de API y no es autoincrementable
-            $table->unsignedBigInteger('codigo_pago_online')->primary(); 
+            $table->id('codigo_pago_online');
             $table->foreignId('pago')->constrained('pagos', 'codigo_pago')->onDelete('cascade');
             $table->string('pedido_id');
             $table->date('fecha_transaccion');

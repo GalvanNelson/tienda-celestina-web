@@ -20,6 +20,7 @@ const form = useForm({
     carrito: [],
     total: 0,
     tipo_pago: 'contado',
+    metodo_pago: 'efectivo',
 });
 
 // --- LÓGICA DEL CARRITO ---
@@ -143,6 +144,20 @@ const excedeCredito = computed(() => {
         </template>
 
         <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
+                <div v-if="$page.props.flash.success"
+                    class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                    role="alert">
+                    <strong class="font-bold">¡Éxito! </strong>
+                    <span class="block sm:inline">{{ $page.props.flash.success }}</span>
+                </div>
+
+                <div v-if="$page.props.flash.error"
+                    class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <strong class="font-bold">Error: </strong>
+                    <span class="block sm:inline">{{ $page.props.flash.error }}</span>
+                </div>
+            </div>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
                 <div v-if="vistaActual === 'catalogo'">
@@ -267,14 +282,16 @@ const excedeCredito = computed(() => {
                                         }}
                                         Bs</span></p>
                                 <p><strong>Disponible:</strong> <span class="text-green-600 font-bold">{{
-                                        creditoDisponible.toFixed(2) }} Bs</span></p>
+                                    creditoDisponible.toFixed(2) }} Bs</span></p>
                             </div>
                         </div>
 
                         <div class="mb-6">
-                            <label class="block text-gray-700 font-medium mb-2 text-sm uppercase tracking-wide">Tipo de
-                                Pago</label>
-                            <div class="flex gap-4">
+                            <label class="block text-gray-700 font-medium mb-2 text-sm uppercase tracking-wide">
+                                Tipo de Venta
+                            </label>
+
+                            <div class="flex gap-4 mb-3">
                                 <label class="flex items-center gap-2 cursor-pointer">
                                     <input type="radio" v-model="form.tipo_pago" value="contado"
                                         class="text-indigo-600 focus:ring-indigo-500">
@@ -285,6 +302,24 @@ const excedeCredito = computed(() => {
                                         class="text-indigo-600 focus:ring-indigo-500">
                                     <span>📝 Crédito</span>
                                 </label>
+                            </div>
+
+                            <div v-if="form.tipo_pago === 'contado'"
+                                class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Método de
+                                    Pago:</label>
+                                <div class="flex gap-4">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" v-model="form.metodo_pago" value="efectivo"
+                                            class="text-green-600 focus:ring-green-500">
+                                        <span>💰 Efectivo</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" v-model="form.metodo_pago" value="qr"
+                                            class="text-blue-600 focus:ring-blue-500">
+                                        <span>📱 QR (PagoFácil)</span>
+                                    </label>
+                                </div>
                             </div>
 
                             <div v-if="excedeCredito" class="mt-2 text-red-600 text-xs font-bold bg-red-50 p-2 rounded">
