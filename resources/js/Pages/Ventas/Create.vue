@@ -20,6 +20,7 @@ const form = useForm({
     carrito: [],
     total: 0,
     tipo_pago: 'contado',
+    metodo_pago: 'efectivo',
 });
 
 // --- LÓGICA DEL CARRITO ---
@@ -236,14 +237,14 @@ const excedeCredito = computed(() => {
                                         <button @click="cambiarCantidad(index, -1)"
                                             class="px-3 py-1 bg-gray-50 hover:bg-gray-200 text-gray-600 font-bold border-r">-</button>
                                         <span class="px-3 py-1 font-bold min-w-[30px] text-center">{{ item.cantidad
-                                        }}</span>
+                                            }}</span>
                                         <button @click="cambiarCantidad(index, 1)"
                                             class="px-3 py-1 bg-gray-50 hover:bg-gray-200 text-gray-600 font-bold border-l">+</button>
                                     </div>
 
                                     <div class="text-right w-24 hidden sm:block">
                                         <div class="font-bold text-gray-800">{{ (item.precio * item.cantidad).toFixed(2)
-                                        }} Bs
+                                            }} Bs
                                         </div>
                                     </div>
 
@@ -278,7 +279,7 @@ const excedeCredito = computed(() => {
                             <div v-if="clienteInfo" class="mt-2 text-xs p-2 bg-gray-50 rounded border">
                                 <p><strong>Límite Crédito:</strong> {{ clienteInfo.limite_credito }} Bs</p>
                                 <p><strong>Deuda Actual:</strong> <span class="text-red-600">{{ clienteInfo.saldo_actual
-                                }}
+                                        }}
                                         Bs</span></p>
                                 <p><strong>Disponible:</strong> <span class="text-green-600 font-bold">{{
                                     creditoDisponible.toFixed(2) }} Bs</span></p>
@@ -286,9 +287,11 @@ const excedeCredito = computed(() => {
                         </div>
 
                         <div class="mb-6">
-                            <label class="block text-gray-700 font-medium mb-2 text-sm uppercase tracking-wide">Tipo de
-                                Pago</label>
-                            <div class="flex gap-4">
+                            <label class="block text-gray-700 font-medium mb-2 text-sm uppercase tracking-wide">
+                                Tipo de Venta
+                            </label>
+
+                            <div class="flex gap-4 mb-3">
                                 <label class="flex items-center gap-2 cursor-pointer">
                                     <input type="radio" v-model="form.tipo_pago" value="contado"
                                         class="text-indigo-600 focus:ring-indigo-500">
@@ -299,6 +302,24 @@ const excedeCredito = computed(() => {
                                         class="text-indigo-600 focus:ring-indigo-500">
                                     <span>📝 Crédito</span>
                                 </label>
+                            </div>
+
+                            <div v-if="form.tipo_pago === 'contado'"
+                                class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Método de
+                                    Pago:</label>
+                                <div class="flex gap-4">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" v-model="form.metodo_pago" value="efectivo"
+                                            class="text-green-600 focus:ring-green-500">
+                                        <span>💰 Efectivo</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" v-model="form.metodo_pago" value="qr"
+                                            class="text-blue-600 focus:ring-blue-500">
+                                        <span>📱 QR (PagoFácil)</span>
+                                    </label>
+                                </div>
                             </div>
 
                             <div v-if="excedeCredito" class="mt-2 text-red-600 text-xs font-bold bg-red-50 p-2 rounded">

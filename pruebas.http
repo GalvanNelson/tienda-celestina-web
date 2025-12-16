@@ -1,0 +1,42 @@
+### Variable de Host (Ajusta si tu puerto es diferente)
+@host = http://localhost:8000
+
+### 1. Simulación de Callback Exitoso (Pago Completado)
+# Asegúrate de cambiar el "PedidoID" por uno que REALMENTE exista en tu base de datos (tabla detalles_pago_online)
+POST {{host}}/api/pagofacil/callback
+Content-Type: application/json
+Accept: application/json
+
+{
+    "PedidoID": "GRUPO14SA_1",
+    "Fecha": "2025-12-15",
+    "Hora": "19:30:00",
+    "MetodoPago": "QR",
+    "Estado": "2"
+}
+
+### 2. Simulación de Callback Fallido (Pago Cancelado/Error)
+POST {{host}}/api/pagofacil/callback
+Content-Type: application/json
+Accept: application/json
+
+{
+    "PedidoID": "GRUPO14SA_43",
+    "Fecha": "2025-12-15",
+    "Hora": "19:35:00",
+    "MetodoPago": "QR",
+    "Estado": "1"
+}
+
+### 3. Prueba de Error (Pedido No Existente)
+POST {{host}}/api/pagofacil/callback
+Content-Type: application/json
+Accept: application/json
+
+{
+    "PedidoID": "ID_FALSO_123",
+    "Fecha": "2025-12-15",
+    "Hora": "19:30:00",
+    "MetodoPago": "QR",
+    "Estado": "2"
+}
