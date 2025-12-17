@@ -7,6 +7,8 @@ use App\Http\Controllers\UnidadMedidaController;
 use App\Http\Controllers\VendedorController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\VentaController;
+use App\Http\Controllers\TiendaController;
+use App\Http\Controllers\VentaOnlineController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -71,12 +73,34 @@ Route::middleware(['auth', 'verified', 'role:propietario,vendedor'])
 
 // ZONA CLIENTES
 // Solo accesible si role_type === 'cliente'
-Route::middleware(['auth', 'verified', 'role:cliente'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:cliente'])
+->prefix('cliente') // <--- AGREGA ESTA LÍNEA
+->group(function () {
     
     Route::get('/mi-cuenta', function () {
         return Inertia::render('Cliente/Home');
     })->name('cliente.home');
 
+    Route::get('/tienda', [TiendaController::class, 'index'])->name('cliente.tienda');
+
+    // Checkout
+    Route::get('/checkout', function () {
+        return Inertia::render('Cliente/Checkout/Inicio');
+    })->name('checkout.inicio');
+
+    Route::post('/venta/store', [VentaOnlineController::class, 'store'])->name('venta.store');
+    
+    // Ruta ligera para el polling (devuelve JSON)
+    Route::get('/venta/status/{id}', [VentaOnlineController::class, 'checkStatus'])->name('venta.status');
+    
+    // Página final
+    Route::get('/venta/exito/{id}', function ($id) {
+        return Inertia::render('Cliente/Checkout/Exito', ['venta_id' => $id]);
+    })->name('venta.exito');
+
 });
+
+// Callback público de PagoFácil (no requiere auth)
+Route::post('/pagofacil/callback', [VentaOnlineController::class, 'callback'])->name('pagofacil.callback');
 
 require __DIR__.'/auth.php';

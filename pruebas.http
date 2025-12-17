@@ -1,5 +1,5 @@
 ### Variable de Host (Ajusta si tu puerto es diferente)
-@host = http://localhost:8000
+@host = http://www.tiendacelestina.tech/grupo14sa/tienda-celestina-web/public
 
 ### 1. Simulación de Callback Exitoso (Pago Completado)
 # Asegúrate de cambiar el "PedidoID" por uno que REALMENTE exista en tu base de datos (tabla detalles_pago_online)
@@ -8,7 +8,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "PedidoID": "GRUPO14SA_1",
+    "PedidoID": "GRUPO14SA_PRUEBA_5",
     "Fecha": "2025-12-15",
     "Hora": "19:30:00",
     "MetodoPago": "QR",

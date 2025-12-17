@@ -8,7 +8,6 @@ class DetallePagoOnline extends Model
 {
     protected $table = 'detalles_pago_online';
     protected $primaryKey = 'codigo_pago_online';
-    public $incrementing = false; // ID no es autoincrementable
     public $timestamps = true;
 
     protected $fillable = [

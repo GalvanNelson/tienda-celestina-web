@@ -67,8 +67,8 @@ return new class extends Migration
             $table->id('codigo_pago_online');
             $table->foreignId('pago')->constrained('pagos', 'codigo_pago')->onDelete('cascade');
             $table->string('pedido_id');
-            $table->date('fecha_transaccion');
-            $table->time('hora_transaccion');
+            $table->string('fecha_transaccion');
+            $table->string('hora_transaccion');
             $table->string('metodo_pago_pasarela');
             $table->string('estado_transaccion');
             $table->timestamps();

@@ -73,7 +73,7 @@ class PagoFacilService
 
     public function generarQR(array $datosVenta)
     {
-        $token = $this->autenticar();
+        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbWFzdGVycXIucGFnb2ZhY2lsLmNvbS5iby9hcGkvc2VydmljZXMvdjIvbG9naW4iLCJpYXQiOjE3NjU5NDg4ODQsImV4cCI6MTc2NjAzMDQwMCwibmJmIjoxNzY1OTQ4ODg0LCJqdGkiOiIyNUJKTVZQYTBIejZHZXdZIiwic3ViIjoiNDciLCJwcnYiOiJlZTMwYTE1M2VhZTA0ZTczZjc5NDA2MzlkYTYwMzRiNzEzOTQ5YmE1In0.v9IvJosb4L2FRnXi01HTH7PEVpztMFf6X_jvoc2Sd6E';        
 
         // Estructura exacta basada en tu JSON de Postman
         $cuerpoPeticion = [
@@ -90,15 +90,15 @@ class PagoFacilService
             
             // URL de callback (Ojo: localhost no funciona para recibir notificaciones reales de la API, 
             // pero sirve para generar el QR). Usa la del postman o una tuya.
-            "callbackUrl" => $datosVenta['callback_url'] ?? $this->callbackUrl,
+            "callbackUrl" => $this->callbackUrl,
             
             "orderDetail" => $datosVenta['detalles']
-        ];
-
+        ];        
+        
         $response = Http::withToken($token)
-            ->post("{$this->baseUrl}/generate-qr", $cuerpoPeticion);
-
+            ->post("{$this->baseUrl}/generate-qr", $cuerpoPeticion);        
         if ($response->successful()) {
+            
             return $response->json();
         }
 
