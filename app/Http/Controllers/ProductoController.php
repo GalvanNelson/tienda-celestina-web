@@ -42,6 +42,7 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $request->validate([
             'nombre_producto' => 'required|string|max:255',
             'precio_unitario' => 'required|numeric|min:0',

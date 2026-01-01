@@ -96,8 +96,8 @@ const procesarVenta = () => {
         onSuccess: () => {
             carrito.value = [];
             vistaActual.value = 'catalogo';
+            tipo_pago.value = 'contado';
             form.reset();
-            form.tipo_pago = 'contado'; // Resetear a contado
         }
     });
 };

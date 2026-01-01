@@ -13,11 +13,9 @@ return new class extends Migration
     {
         // Ventas
         Schema::create('ventas', function (Blueprint $table) {
-            $table->id('codigo_venta');
-            
+            $table->id('codigo_venta');            
             $table->foreignId('cliente')->constrained('clientes', 'codigo_cliente');
-            $table->foreignId('vendedor')->constrained('vendedores', 'codigo_vendedor');
-            
+            $table->foreignId('vendedor')->constrained('vendedores', 'codigo_vendedor');            
             $table->timestamp('fecha_venta');
             $table->decimal('monto_total', 10, 2);
             $table->string('tipo_pago'); // 'contado', 'credito'
