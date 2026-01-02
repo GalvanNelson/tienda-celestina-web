@@ -42,26 +42,30 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        
         $request->validate([
             'nombre_producto' => 'required|string|max:255',
             'precio_unitario' => 'required|numeric|min:0',
             'stock' => 'required|numeric|min:0',
             'categoria' => 'required|exists:categorias,codigo_categoria',
             'unidad_medida' => 'required|exists:unidad_medidas,codigo_unidad_medida',
-            'imagen' => 'nullable|image|max:2048', // Max 2MB
+            'imagen' => 'required|image|max:2048', // Max 2MB
         ]);
 
-        $data = $request->except('imagen');
-
-        // Manejo de imagen
+        $rutaImagen = null;
         if ($request->hasFile('imagen')) {
-            // Guarda en storage/app/public/productos
-            $path = $request->file('imagen')->store('productos', 'public');
-            $data['imagen'] = $path;
+            // Guarda la imagen en la carpeta 'public/productos'
+            $rutaImagen = $request->file('imagen')->store('productos', 'public');
         }
 
-        Producto::create($data);
+        Producto::create([
+            'nombre_producto' => $request->nombre_producto,
+            'precio_unitario' => $request->precio_unitario,
+            'stock' => $request->stock,
+            'categoria' => $request->categoria,
+            'unidad_medida' => $request->unidad_medida,
+            'imagen' => $rutaImagen,
+        ]);
 
         return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
     }
@@ -70,8 +74,12 @@ class ProductoController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        //
+    {        
+        $producto = Producto::with(['categoriaRelacion', 'unidadMedidaRelacion'])->findOrFail($id);
+        
+        return Inertia::render('Propietario/Productos/Show', [
+            'producto' => $producto,
+        ]);
     }
 
     /**

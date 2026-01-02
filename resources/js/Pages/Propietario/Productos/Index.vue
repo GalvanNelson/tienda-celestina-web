@@ -1,10 +1,26 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
+import Pagination from '@/Components/Pagination.vue';
+import { ref } from 'vue';
+import ShowProductModal from './Show.vue';
 
 defineProps({
     productos: Object
 });
+
+const showModal = ref(false);
+const selectedProduct = ref(null);
+
+const openShowModal = (producto) => {
+    selectedProduct.value = producto;
+    showModal.value = true;
+};
+
+const closeShowModal = () => {
+    showModal.value = false;
+    selectedProduct.value = null;
+};
 
 const deleteProduct = (id) => {
     if (confirm('¿Estás seguro de eliminar este producto?')) {
@@ -37,35 +53,44 @@ const deleteProduct = (id) => {
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Imagen</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unidad de Medida</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unidad de Medida</th>                                
                                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="prod in productos.data" :key="prod.codigo_producto">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <img v-if="prod.imagen" :src="`/storage/${prod.imagen}`" class="h-10 w-10 rounded-full object-cover">
+                                    <img v-if="prod.imagen" :src="`/storage/${prod.imagen}`" class="w-16 h-16 object-cover">
                                     <span v-else class="text-gray-400">Sin img</span>
                                 </td>
                                 <td class="px-6 py-4">{{ prod.nombre_producto }}</td>
-                                <td class="px-6 py-4">{{ prod.precio_unitario }} BOB</td>
+                                <td class="px-6 py-4">{{ prod.precio_unitario }} Bs</td>
                                 <td class="px-6 py-4">
                                     {{ prod.unidad_medida_relacion?.nombre }}
                                 </td>
-                                <td class="px-6 py-4">{{ prod.categoria_relacion?.nombre }}</td>
                                 <td class="px-6 py-4 text-right text-sm font-medium">
+                                    <button @click="openShowModal(prod)" class="text-green-600 hover:text-green-900 mr-3">
+                                        Ver
+                                    </button>
                                     <Link :href="route('productos.edit', prod.codigo_producto)" class="text-indigo-600 hover:text-indigo-900 mr-3">Editar</Link>
                                     <button @click="deleteProduct(prod.codigo_producto)" class="text-red-600 hover:text-red-900">Eliminar</button>
                                 </td>
+                                
                             </tr>
                         </tbody>
                     </table>
                     
-                    <div class="p-4" v-if="productos.links">
-                         </div>
+                    <div class="p-4 bg-gray-50 border-t">
+                    <Pagination :links="productos.links" />
+                    </div>
                 </div>
             </div>
         </div>
+        <ShowProductModal 
+            v-if="selectedProduct" 
+            :show="showModal" 
+            :producto="selectedProduct" 
+            @close="closeShowModal" 
+        />
     </AuthenticatedLayout>
 </template>
