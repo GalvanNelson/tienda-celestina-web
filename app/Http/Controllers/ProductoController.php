@@ -84,6 +84,11 @@ class ProductoController extends Controller
     public function show(string $id)
     {        
         $producto = Producto::with(['categoriaRelacion', 'unidadMedidaRelacion'])->findOrFail($id);
+
+        // Genera la URL completa: http://tiendacelestina.tech/grupo14sa/.../storage/nombre.png
+        $producto->imagen_url = $producto->imagen 
+            ? asset('storage/' . $producto->imagen) 
+            : null;
         
         return Inertia::render('Propietario/Productos/Show', [
             'producto' => $producto,

@@ -24,8 +24,8 @@ const emit = defineEmits(['close']);
                             <div class="flex flex-col gap-6">
                                 
                                 <div class="w-full flex justify-center bg-gray-50 rounded-lg p-2">
-                                    <img v-if="producto.imagen" 
-                                         :src="`/storage/${producto.imagen}`" 
+                                    <img v-if="producto.imagen_url" 
+                                         :src="producto.imagen_url" 
                                          class="max-h-80 w-auto rounded-lg shadow-md object-contain border border-gray-100">
                                     <div v-else class="w-full h-48 bg-gray-100 flex flex-col items-center justify-center text-gray-400 rounded-lg border-2 border-dashed">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
