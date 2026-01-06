@@ -20,6 +20,14 @@ class ProductoController extends Controller
             ->latest()
             ->paginate(10);
 
+        $productos->getCollection()->transform(function ($producto) {
+        // Genera la URL completa: http://tiendacelestina.tech/grupo14sa/.../storage/nombre.png
+        $producto->imagen_url = $producto->imagen 
+            ? asset('storage/' . $producto->imagen) 
+            : null;
+        return $producto;
+        });
+
         return Inertia::render('Propietario/Productos/Index', [
             'productos' => $productos
         ]);

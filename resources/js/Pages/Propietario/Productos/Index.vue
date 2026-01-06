@@ -60,7 +60,7 @@ const deleteProduct = (id) => {
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="prod in productos.data" :key="prod.codigo_producto">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <img v-if="prod.imagen" :src="`/storage/${prod.imagen}`" class="w-16 h-16 object-cover">
+                                    <img v-if="prod.imagen_url" :src="prod.imagen_url" class="w-16 h-16 object-cover">
                                     <span v-else class="text-gray-400">Sin img</span>
                                 </td>
                                 <td class="px-6 py-4">{{ prod.nombre_producto }}</td>
