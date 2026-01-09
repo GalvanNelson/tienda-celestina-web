@@ -63,7 +63,7 @@ class ProductoController extends Controller
         $rutaImagen = null;
         if ($request->hasFile('imagen')) {
             // Guarda la imagen en la carpeta 'public/productos'
-            $rutaImagen = $request->file('imagen')->store('productos', 'public');
+            $rutaImagen = $request->file('imagen')->store('/','public');
         }
 
         Producto::create([
@@ -132,7 +132,7 @@ class ProductoController extends Controller
             if ($producto->imagen) {
                 Storage::disk('public')->delete($producto->imagen);
             }
-            $data['imagen'] = $request->file('imagen')->store('productos', 'public');
+            $data['imagen'] = $request->file('imagen')->store('/','public');
         }
 
         $producto->update($data);
