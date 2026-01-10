@@ -15,8 +15,12 @@ class ProductoController extends Controller
      */
     public function index()
     {
+        $search = request()->query('search');
         // Traemos productos con sus relaciones para mostrar nombres en vez de IDs
         $productos = Producto::with(['categoriaRelacion', 'unidadMedidaRelacion'])
+            ->when($search, function ($query) use ($search) {
+                $query->whereRaw("LOWER(nombre_producto) LIKE LOWER(?)", ["%{$search}%"]);
+            })
             ->latest()
             ->paginate(10);
 
@@ -29,7 +33,8 @@ class ProductoController extends Controller
         });
 
         return Inertia::render('Propietario/Productos/Index', [
-            'productos' => $productos
+            'productos' => $productos,
+            'filters' => request()->only(['search']),
         ]);
     }
 

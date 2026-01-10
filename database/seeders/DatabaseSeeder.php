@@ -79,6 +79,6 @@ class DatabaseSeeder extends Seeder
             'saldo_actual' => 0.00
         ]);
         
-        $this->call(InventarioSeeder::class);
+        //$this->call(InventarioSeeder::class);
     }
 }
