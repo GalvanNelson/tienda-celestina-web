@@ -37,11 +37,11 @@ const submit = () => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Nuevo Producto</h2>
         </template>
 
-        <div class="py-12">
-            <div class="max-w-lg mx-auto bg-white p-8 rounded shadow">
-                <form @submit.prevent="submit">
+        <div class="py-12 px-4 sm:px-0">
+            <div class="max-w-xl mx-auto bg-white p-6 sm:p-8 rounded shadow">
+                <form @submit.prevent="submit" class="space-y-6">
 
-                    <div class="mb-4">
+                    <div>
                         <label class="block text-gray-700">Nombre del Producto</label>
                         <input v-model="form.nombre_producto" type="text" class="w-full border-gray-300 rounded mt-1">
                         <div v-if="form.errors.nombre_producto" class="text-red-500 text-sm">{{
@@ -49,7 +49,7 @@ const submit = () => {
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-gray-700">Precio Unitario</label>
                             <input v-model="form.precio_unitario" type="number" step="0.01"
@@ -66,7 +66,7 @@ const submit = () => {
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-gray-700">Categoría</label>
                             <select v-model="form.categoria" class="w-full border-gray-300 rounded mt-1">
@@ -94,7 +94,7 @@ const submit = () => {
                         </div>
                     </div>
 
-                    <div class="mb-6">
+                    <div>
                         <label class="block text-gray-700">Imagen del Producto</label>
                         <input type="file" accept="image/png, image/jpeg, image/jpg" @change="handleFileUpload"
                             class="w-full mt-1 border border-gray-300 p-2 rounded">
@@ -107,12 +107,12 @@ const submit = () => {
                         <div v-if="form.errors.imagen" class="text-red-500 text-sm">{{ form.errors.imagen }}</div>
                     </div>
 
-                    <div class="flex justify-end">
-                        <Link :href="route('productos.index')" class="mr-4 px-4 py-2 text-gray-600 hover:text-gray-900">
+                    <div class="flex flex-col sm:flex-row justify-end gap-3">
+                        <Link :href="route('productos.index')" class="px-4 py-2 text-center text-gray-600 hover:text-gray-900 border border-gray-200 rounded">
                             Cancelar
                         </Link>
                         <button type="submit" :disabled="form.processing"
-                            class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+                            class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 disabled:opacity-50">
                             Guardar Producto
                         </button>
                     </div>

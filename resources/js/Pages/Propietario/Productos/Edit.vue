@@ -35,17 +35,17 @@ const submit = () => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Editar Producto</h2>
         </template>
 
-        <div class="py-12">
-            <div class="max-w-lg mx-auto bg-white p-8 rounded shadow">
-                <form @submit.prevent="submit">
+        <div class="py-12 px-4 sm:px-0">
+            <div class="max-w-xl mx-auto bg-white p-6 sm:p-8 rounded shadow">
+                <form @submit.prevent="submit" class="space-y-6">
                     
-                    <div class="mb-4">
+                    <div>
                         <label class="block text-gray-700 font-medium mb-1">Nombre del Producto</label>
                         <input v-model="form.nombre_producto" type="text" class="w-full border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500">
                         <div v-if="form.errors.nombre_producto" class="text-red-500 text-sm mt-1">{{ form.errors.nombre_producto }}</div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-gray-700 font-medium mb-1">Precio Unitario</label>
                             <input v-model="form.precio_unitario" type="number" step="0.01" class="w-full border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500">
@@ -58,7 +58,7 @@ const submit = () => {
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-gray-700 font-medium mb-1">Categoría</label>
                             <select v-model="form.categoria" class="w-full border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500">
@@ -81,7 +81,7 @@ const submit = () => {
                         </div>
                     </div>
 
-                    <div class="mb-6">
+                    <div>
                         <label class="block text-gray-700 font-medium mb-1">Imagen del Producto</label>
                         
                         <div v-if="producto.imagen" class="mb-2">
@@ -99,8 +99,8 @@ const submit = () => {
                         </progress>
                     </div>
 
-                    <div class="flex justify-end items-center">
-                        <Link :href="route('productos.index')" class="mr-4 text-gray-600 hover:text-gray-900 text-sm">Cancelar</Link>
+                    <div class="flex flex-col sm:flex-row justify-end items-stretch sm:items-center gap-3">
+                        <Link :href="route('productos.index')" class="text-center text-gray-600 hover:text-gray-900 text-sm border border-gray-200 rounded px-4 py-2">Cancelar</Link>
                         <button type="submit" :disabled="form.processing" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 shadow-sm transition ease-in-out duration-150 disabled:opacity-50">
                             Actualizar Producto
                         </button>
