@@ -57,13 +57,7 @@ const submit = () => {
                             <div v-if="form.errors.precio_unitario" class="text-red-500 text-sm">{{
                                 form.errors.precio_unitario
                                 }}</div>
-                        </div>
-                        <div>
-                            <label class="block text-gray-700">Stock Inicial</label>
-                            <input v-model="form.stock" type="number" step="0.01"
-                                class="w-full border-gray-300 rounded mt-1">
-                            <div v-if="form.errors.stock" class="text-red-500 text-sm">{{ form.errors.stock }}</div>
-                        </div>
+                        </div>                        
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

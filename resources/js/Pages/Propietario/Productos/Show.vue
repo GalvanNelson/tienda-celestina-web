@@ -55,11 +55,6 @@ const emit = defineEmits(['close']);
                                         <label class="text-xs font-semibold uppercase text-indigo-600">Precio</label>
                                         <p class="text-2xl font-black text-indigo-700">{{ producto.precio_unitario }} <span class="text-sm">Bs</span></p>
                                     </div>
-
-                                    <div class="p-3 bg-green-50 rounded border border-green-100">
-                                        <label class="text-xs font-semibold uppercase text-green-600">Stock Actual</label>
-                                        <p class="text-2xl font-black text-green-700">{{ producto.stock }}</p>
-                                    </div>
                                 </div>
                             </div>
                         </div>

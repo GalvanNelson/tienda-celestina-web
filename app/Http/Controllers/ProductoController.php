@@ -58,8 +58,7 @@ class ProductoController extends Controller
         
         $request->validate([
             'nombre_producto' => 'required|string|max:255',
-            'precio_unitario' => 'required|numeric|min:0',
-            'stock' => 'required|numeric|min:0',
+            'precio_unitario' => 'required|numeric|min:0',            
             'categoria' => 'required|exists:categorias,codigo_categoria',
             'unidad_medida' => 'required|exists:unidad_medidas,codigo_unidad_medida',
             'imagen' => 'required|image|max:2048', // Max 2MB
@@ -73,8 +72,7 @@ class ProductoController extends Controller
 
         Producto::create([
             'nombre_producto' => $request->nombre_producto,
-            'precio_unitario' => $request->precio_unitario,
-            'stock' => $request->stock,
+            'precio_unitario' => $request->precio_unitario,            
             'categoria' => $request->categoria,
             'unidad_medida' => $request->unidad_medida,
             'imagen' => $rutaImagen,

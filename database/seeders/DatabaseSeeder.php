@@ -19,13 +19,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
         // =================================================================
         // 1. USUARIO PROPIETARIO (ADMIN)
         // =================================================================
@@ -79,6 +72,6 @@ class DatabaseSeeder extends Seeder
             'saldo_actual' => 0.00
         ]);
         
-        //$this->call(InventarioSeeder::class);
+        $this->call(InventarioSeeder::class);
     }
 }

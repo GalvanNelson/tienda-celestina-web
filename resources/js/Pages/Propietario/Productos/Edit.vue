@@ -50,12 +50,7 @@ const submit = () => {
                             <label class="block text-gray-700 font-medium mb-1">Precio Unitario</label>
                             <input v-model="form.precio_unitario" type="number" step="0.01" class="w-full border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500">
                             <div v-if="form.errors.precio_unitario" class="text-red-500 text-sm mt-1">{{ form.errors.precio_unitario }}</div>
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 font-medium mb-1">Stock Actual</label>
-                            <input v-model="form.stock" type="number" step="0.01" class="w-full border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500">
-                            <div v-if="form.errors.stock" class="text-red-500 text-sm mt-1">{{ form.errors.stock }}</div>
-                        </div>
+                        </div>                    
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

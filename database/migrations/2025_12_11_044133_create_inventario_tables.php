@@ -28,7 +28,6 @@ return new class extends Migration
             $table->string('nombre_producto');
             $table->string('imagen')->nullable();
             $table->decimal('precio_unitario', 10, 2);
-            $table->decimal('stock', 10, 2);
             $table->timestamps();
             // Relaciones
             $table->foreignId('categoria')->constrained('categorias', 'codigo_categoria');
