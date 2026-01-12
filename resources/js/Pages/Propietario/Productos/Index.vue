@@ -90,7 +90,7 @@ const deleteProduct = (id) => {
                                             Precio</th>
                                         <th
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Unidad de Medida</th>
+                                            Categoria</th>
                                         <th
                                             class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Acciones</th>
@@ -106,7 +106,7 @@ const deleteProduct = (id) => {
                                         <td class="px-6 py-4">{{ prod.nombre_producto }}</td>
                                         <td class="px-6 py-4">{{ prod.precio_unitario }} Bs</td>
                                         <td class="px-6 py-4">
-                                            {{ prod.unidad_medida_relacion?.nombre }}
+                                            {{ prod.categoria_relacion?.nombre }}
                                         </td>
                                         <td class="px-6 py-4 text-right text-sm font-medium space-x-3">
                                             <button @click="openShowModal(prod)"
