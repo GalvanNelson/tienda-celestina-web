@@ -16,8 +16,9 @@ class ProductoController extends Controller
     public function index()
     {
         $search = request()->query('search');
-        // Traemos productos con sus relaciones para mostrar nombres en vez de IDs
-        $productos = Producto::with(['categoriaRelacion', 'unidadMedidaRelacion'])
+        
+        // Cargamos 'unidadMedida' (singular) porque ahora es BelongsTo
+        $productos = Producto::with(['categorias', 'unidadMedida'])
             ->when($search, function ($query) use ($search) {
                 $query->whereRaw("LOWER(nombre_producto) LIKE LOWER(?)", ["%{$search}%"]);
             })
@@ -25,11 +26,10 @@ class ProductoController extends Controller
             ->paginate(10);
 
         $productos->getCollection()->transform(function ($producto) {
-        // Genera la URL completa: http://tiendacelestina.tech/grupo14sa/.../storage/nombre.png
-        $producto->imagen_url = $producto->imagen 
-            ? asset('storage/' . $producto->imagen) 
-            : null;
-        return $producto;
+            $producto->imagen_completa_url = $producto->imagen_url 
+                ? asset('storage/' . $producto->imagen_url) 
+                : null;
+            return $producto;
         });
 
         return Inertia::render('Propietario/Productos/Index', [
@@ -43,7 +43,6 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        // Necesitamos estas listas para los <select> del formulario
         return Inertia::render('Propietario/Productos/Create', [
             'categorias' => Categoria::all(),
             'unidades' => UnidadMedida::all(),
@@ -59,26 +58,29 @@ class ProductoController extends Controller
         $request->validate([
             'nombre_producto' => 'required|string|max:255',
             'precio_unitario' => 'required|numeric|min:0',            
-            'categoria' => 'required|exists:categorias,codigo_categoria',
-            'unidad_medida' => 'required|exists:unidad_medidas,codigo_unidad_medida',
-            'imagen' => 'required|image|max:2048', // Max 2MB
+            'grupo'           => 'required|string', // Campo requerido en migración
+            'categorias'      => 'required|array',   // Array de IDs para la tabla pivot
+            'unidad_medida'   => 'required|integer', // ID único de unidad de medida
+            'imagen_url'      => 'nullable|image|max:2048',
         ]);
 
-        $rutaImagen = null;
-        if ($request->hasFile('imagen')) {
-            // Guarda la imagen en la carpeta 'public/productos'
-            $rutaImagen = $request->file('imagen')->store('/','public');
+       // dd($request->all());
+
+        $nombreImagen = null;
+        if ($request->hasFile('imagen_url')) {
+            $nombreImagen = $request->file('imagen_url')->store('/', 'public');
         }
 
-        Producto::create([
+        $producto = Producto::create([
             'nombre_producto' => $request->nombre_producto,
             'precio_unitario' => $request->precio_unitario,            
-            'categoria' => $request->categoria,
+            'grupo'           => $request->grupo,
             'unidad_medida' => $request->unidad_medida,
-            'imagen' => $rutaImagen,
+            'imagen_url'      => $nombreImagen,
         ]);
 
-        return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
+        $producto->categorias()->attach($request->categorias);
+        return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');    
     }
 
     /**
@@ -86,11 +88,10 @@ class ProductoController extends Controller
      */
     public function show(string $id)
     {        
-        $producto = Producto::with(['categoriaRelacion', 'unidadMedidaRelacion'])->findOrFail($id);
+        $producto = Producto::with(['unidadMedida'])->findOrFail($id);
 
-        // Genera la URL completa: http://tiendacelestina.tech/grupo14sa/.../storage/nombre.png
-        $producto->imagen_url = $producto->imagen 
-            ? asset('storage/' . $producto->imagen) 
+        $producto->imagen_completa_url = $producto->imagen_url 
+            ? asset('storage/' . $producto->imagen_url) 
             : null;
         
         return Inertia::render('Propietario/Productos/Show', [
@@ -103,7 +104,12 @@ class ProductoController extends Controller
      */
     public function edit(string $id)
     {
-        $producto = Producto::findOrFail($id);
+        // Cargar singular 'unidadMedida'
+        $producto = Producto::with(['categorias'])->findOrFail($id);        
+        // Agregar imagen completa URL
+        $producto->imagen_completa_url = $producto->imagen_url 
+            ? asset('storage/' . $producto->imagen_url) 
+            : null;
         
         return Inertia::render('Propietario/Productos/Edit', [
             'producto' => $producto,
@@ -122,23 +128,26 @@ class ProductoController extends Controller
         $request->validate([
             'nombre_producto' => 'required|string|max:255',
             'precio_unitario' => 'required|numeric|min:0',
-            'stock' => 'required|numeric|min:0',
-            'categoria' => 'required|exists:categorias,codigo_categoria',
-            'unidad_medida' => 'required|exists:unidad_medidas,codigo_unidad_medida',
-            'imagen' => 'nullable|image|max:2048',
+            'grupo'           => 'required|integer',
+            'categorias'      => 'required|array',
+            'unidad_medida'   => 'required|integer',
+            'imagen_url'      => 'nullable|image|max:2048',
         ]);
 
-        $data = $request->except('imagen');
+        // Incluimos 'unidad_medida' en los datos a actualizar
+        $data = $request->only(['nombre_producto', 'precio_unitario', 'grupo', 'unidad_medida']);
 
-        if ($request->hasFile('imagen')) {
-            // Borrar imagen anterior si existe
-            if ($producto->imagen) {
-                Storage::disk('public')->delete($producto->imagen);
+        if ($request->hasFile('imagen_url')) {
+            if ($producto->imagen_url) {
+                Storage::disk('public')->delete($producto->imagen_url);
             }
-            $data['imagen'] = $request->file('imagen')->store('/','public');
+            $data['imagen_url'] = $request->file('imagen_url')->store('/', 'public');
         }
 
         $producto->update($data);
+
+        // Solo sincronizamos categorías
+        $producto->categorias()->sync($request->categorias);
 
         return redirect()->route('productos.index')->with('success', 'Producto actualizado.');
     }
@@ -150,8 +159,11 @@ class ProductoController extends Controller
     {
         $producto = Producto::findOrFail($id);
         
-        if ($producto->imagen) {
-            Storage::disk('public')->delete($producto->imagen);
+        // Desasociar las categorías antes de eliminar
+        $producto->categorias()->detach();
+        
+        if ($producto->imagen_url) {
+            Storage::disk('public')->delete($producto->imagen_url);
         }
         
         $producto->delete();

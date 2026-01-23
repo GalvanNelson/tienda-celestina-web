@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Producto extends Model
 {
@@ -12,25 +14,24 @@ class Producto extends Model
 
     protected $fillable = [
         'nombre_producto', 
-        'imagen', 
-        'precio_unitario', 
-        'stock', 
-        'categoria', 
-        'unidad_medida'
+        'imagen_url', 
+        'precio_unitario',                 
+        'grupo',
+        'unidad_medida',
     ];
 
     protected $casts = [
         'precio_unitario' => 'decimal:2',
-        'stock' => 'decimal:2',
+        'grupo' => 'integer',
+        'unidad_medida' => 'integer',
     ];
 
-    // Relaciones
-    public function categoriaRelacion()
+    public function categorias(): BelongsToMany
     {
-        return $this->belongsTo(Categoria::class, 'categoria', 'codigo_categoria');
+        return $this->belongsToMany(Categoria::class, 'producto_categoria', 'producto', 'categoria');
     }
-
-    public function unidadMedidaRelacion()
+    
+    public function unidadMedida(): BelongsTo
     {
         return $this->belongsTo(UnidadMedida::class, 'unidad_medida', 'codigo_unidad_medida');
     }

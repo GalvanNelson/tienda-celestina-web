@@ -26,12 +26,18 @@ return new class extends Migration
         Schema::create('productos', function (Blueprint $table) {
             $table->id('codigo_producto');
             $table->string('nombre_producto');
-            $table->string('imagen')->nullable();
+            $table->string('imagen_url')->nullable();
             $table->decimal('precio_unitario', 10, 2);
-            $table->timestamps();
-            // Relaciones
+            $table->integer('grupo')->comment('tienda, bebida');
+            $table->foreignId('unidad_medida')->nullable()->constrained('unidad_medidas', 'codigo_unidad_medida');
+            $table->timestamps();            
+        });
+
+         Schema::create('producto_categoria', function (Blueprint $table) {
+            $table->id('codigo_producto_categoria');
             $table->foreignId('categoria')->constrained('categorias', 'codigo_categoria');
-            $table->foreignId('unidad_medida')->constrained('unidad_medidas', 'codigo_unidad_medida');
+            $table->foreignId('producto')->constrained('productos', 'codigo_producto');
+            $table->unique(['categoria', 'producto']); // Índice compuesto            
         });
     }
 
@@ -40,6 +46,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('producto_categoria');
         Schema::dropIfExists('productos');
         Schema::dropIfExists('unidad_medidas');
         Schema::dropIfExists('categorias');

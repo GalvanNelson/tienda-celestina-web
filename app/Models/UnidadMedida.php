@@ -11,4 +11,9 @@ class UnidadMedida extends Model
     public $timestamps = true;
 
     protected $fillable = ['nombre'];
+
+    public function productos(): HasMany
+    {
+        return $this->hasMany(Producto::class, 'unidad_medida', 'codigo_unidad_medida');
+    }
 }

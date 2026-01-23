@@ -28,7 +28,7 @@ return new class extends Migration
         Schema::create('detalle_ventas', function (Blueprint $table) {
             $table->id('codigo_detalle_venta');
             $table->foreignId('venta')->constrained('ventas', 'codigo_venta')->onDelete('cascade');
-            $table->foreignId('producto')->constrained('productos', 'codigo_producto');
+            $table->foreignId('producto')->constrained('productos', 'codigo_producto');            
             $table->decimal('precio_unitario', 10, 2);
             $table->decimal('cantidad', 10, 2);
             $table->decimal('subtotal', 10, 2);

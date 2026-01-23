@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
-import Pagination from '@/Components/Pagination.vue';
+import Pagination from '@/Components/Pagination.vue'; 
 import { ref, watch } from 'vue';
 import ShowProductModal from './Show.vue';
 
@@ -16,20 +16,10 @@ const search = ref(props.filters?.search || '');
 let searchTimeout;
 
 watch(search, (value) => {
-    // Limpiar timeout anterior
     clearTimeout(searchTimeout);
-    
-    // Esperar 500ms después de que el usuario deje de escribir
     searchTimeout = setTimeout(() => {
-        router.get(
-            route('productos.index'),
-            { search: value }, // Enviamos el término como parámetro ?search=...
-            {
-                preserveState: true, // Evita que el componente se reinicie por completo
-                replace: true        // Reemplaza la entrada en el historial del navegador
-            }
-        );
-    }, 500); // 500ms de debounce
+        router.get(route('productos.index'), { search: value }, { preserveState: true, replace: true });
+    }, 500);
 });
 
 const openShowModal = (producto) => {
@@ -50,9 +40,7 @@ const deleteProduct = (id) => {
 </script>
 
 <template>
-
     <Head title="Inventario" />
-
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Gestión de Productos</h2>
@@ -60,118 +48,89 @@ const deleteProduct = (id) => {
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
-                <div class="flex flex-col sm:flex-row justify-between mb-4 gap-4">
-                    <div class="w-full sm:w-1/3">
-                        <input v-model="search" type="text" placeholder="Buscar producto por nombre..."
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                <div class="flex flex-col sm:flex-row justify-between gap-4 mb-4 px-4 sm:px-0">
+                    <div class="w-full sm:flex-1">
+                        <input v-model="search" type="text" placeholder="Buscar producto..." class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none text-sm" />
                     </div>
-                    <Link :href="route('productos.create')"
-                        class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-center">
-                        + Nuevo Producto
+                    <Link :href="route('productos.create')" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-center text-sm font-medium whitespace-nowrap">
+                        + Nuevo
                     </Link>
                 </div>
 
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <!-- Desktop table -->
-                    <div class="hidden md:block">
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Imagen</th>
-                                        <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Producto</th>
-                                        <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Precio</th>
-                                        <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Categoria</th>
-                                        <th
-                                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr v-for="prod in productos.data" :key="prod.codigo_producto">
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <img v-if="prod.imagen_url" :src="prod.imagen_url"
-                                                class="w-16 h-16 object-cover rounded-md">
-                                            <span v-else class="text-gray-400">Sin img</span>
-                                        </td>
-                                        <td class="px-6 py-4">{{ prod.nombre_producto }}</td>
-                                        <td class="px-6 py-4">{{ prod.precio_unitario }} Bs</td>
-                                        <td class="px-6 py-4">
-                                            {{ prod.categoria_relacion?.nombre }}
-                                        </td>
-                                        <td class="px-6 py-4 text-right text-sm font-medium space-x-3">
-                                            <button @click="openShowModal(prod)"
-                                                class="text-green-600 hover:text-green-900">
-                                                Ver
-                                            </button>
-                                            <Link :href="route('productos.edit', prod.codigo_producto)"
-                                                class="text-indigo-600 hover:text-indigo-900">Editar</Link>
-                                            <button @click="deleteProduct(prod.codigo_producto)"
-                                                class="text-red-600 hover:text-red-900">Eliminar</button>
-                                        </td>
-
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <!-- Vista de tabla para pantallas medianas y grandes -->
+                    <div class="hidden md:block overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Imagen</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Producto</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Precio</th>                                    
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Unidad</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr v-for="prod in productos.data" :key="prod.codigo_producto">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <img v-if="prod.imagen_completa_url" :src="prod.imagen_completa_url" class="w-12 h-12 object-cover rounded">
+                                        <span v-else class="text-xs text-gray-400">Sin img</span>
+                                    </td>
+                                    <td class="px-6 py-4 font-medium text-gray-900">{{ prod.nombre_producto }}</td>
+                                    <td class="px-6 py-4">{{ prod.precio_unitario }} Bs</td>                                    
+                                    <td class="px-6 py-4 text-sm text-gray-600">
+                                        <span v-if="prod.unidad_medida" class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+                                            {{ prod.unidad_medida.nombre }}
+                                        </span>
+                                        <span v-else class="text-gray-400 text-xs">N/A</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right space-x-2">
+                                        <button @click="openShowModal(prod)" class="text-green-600 hover:text-green-900">Ver</button>
+                                        <Link :href="route('productos.edit', prod.codigo_producto)" class="text-indigo-600 hover:text-indigo-900">Editar</Link>
+                                        <button @click="deleteProduct(prod.codigo_producto)" class="text-red-600 hover:text-red-900">Eliminar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
-                    <!-- Mobile cards -->
-                    <div class="grid gap-4 p-4 md:hidden">
-                        <div v-for="prod in productos.data" :key="prod.codigo_producto"
-                            class="border rounded-lg p-4 shadow-sm space-y-3">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-16 h-16 bg-gray-100 rounded-md overflow-hidden">
-                                    <img v-if="prod.imagen_url" :src="prod.imagen_url"
-                                        class="w-full h-full object-cover">
-                                    <span v-else
-                                        class="text-xs text-gray-400 flex items-center justify-center h-full">Sin
-                                        img</span>
+                    <!-- Vista de cards para dispositivos móviles y tablets -->
+                    <div class="md:hidden">
+                        <div class="divide-y divide-gray-200">
+                            <div v-for="prod in productos.data" :key="prod.codigo_producto" class="p-4">
+                                <div class="flex gap-3 mb-3">
+                                    <div class="flex-shrink-0">
+                                        <img v-if="prod.imagen_completa_url" :src="prod.imagen_completa_url" class="w-16 h-16 object-cover rounded">
+                                        <div v-else class="w-16 h-16 bg-gray-200 rounded flex items-center justify-center">
+                                            <span class="text-xs text-gray-400">Sin img</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h3 class="font-semibold text-gray-900">{{ prod.nombre_producto }}</h3>
+                                        <p class="text-lg font-bold text-indigo-600">{{ prod.precio_unitario }} Bs</p>
+                                        <div v-if="prod.unidad_medida" class="mt-1">
+                                            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                                                {{ prod.unidad_medida.nombre }}
+                                            </span>
+                                        </div>
+                                        <div v-else class="text-gray-400 text-xs mt-1">N/A</div>
+                                    </div>
                                 </div>
-                                <div class="flex-1">
-                                    <p class="text-sm text-gray-500">Producto</p>
-                                    <p class="font-semibold text-gray-800">{{ prod.nombre_producto }}</p>
+                                <div class="flex gap-2 justify-end flex-wrap">
+                                    <button @click="openShowModal(prod)" class="text-xs px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200">Ver</button>
+                                    <Link :href="route('productos.edit', prod.codigo_producto)" class="text-xs px-3 py-1 bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200">Editar</Link>
+                                    <button @click="deleteProduct(prod.codigo_producto)" class="text-xs px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200">Eliminar</button>
                                 </div>
-                            </div>
-
-                            <div class="flex justify-between text-sm text-gray-700">
-                                <div>
-                                    <p class="text-gray-500">Precio</p>
-                                    <p class="font-medium">{{ prod.precio_unitario }} Bs</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-gray-500">Unidad</p>
-                                    <p class="font-medium">{{ prod.unidad_medida_relacion?.nombre }}</p>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center justify-end space-x-4 text-sm font-medium">
-                                <button @click="openShowModal(prod)"
-                                    class="text-green-600 hover:text-green-900">Ver</button>
-                                <Link :href="route('productos.edit', prod.codigo_producto)"
-                                    class="text-indigo-600 hover:text-indigo-900">Editar</Link>
-                                <button @click="deleteProduct(prod.codigo_producto)"
-                                    class="text-red-600 hover:text-red-900">Eliminar</button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="p-4 bg-gray-50 border-t">
-                        <Pagination :links="productos.links" />
+                    <div class="p-4 bg-gray-50 border-t" v-if="productos.links">
+                         <Pagination :links="productos.links" />
                     </div>
                 </div>
             </div>
         </div>
-        <ShowProductModal v-if="selectedProduct" :show="showModal" :producto="selectedProduct"
-            @close="closeShowModal" />
+        <ShowProductModal v-if="selectedProduct" :show="showModal" :producto="selectedProduct" @close="closeShowModal" />
     </AuthenticatedLayout>
 </template>
