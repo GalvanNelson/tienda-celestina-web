@@ -85,7 +85,10 @@ Route::middleware(['auth', 'verified', 'role:cliente'])
     Route::resource('/compras', ComprasOnlineController::class)->only(['index', 'show', 'store']); 
 
     // Tienda Online
-    Route::get('/tienda', [TiendaController::class, 'index'])->name('cliente.tienda');
+    Route::get('/catalogo', [TiendaController::class, 'index'])->name('cliente.tienda');
+    
+    // Checkout
+    Route::get('/checkout', [ComprasOnlineController::class, 'checkout'])->name('cliente.checkout');
 });
 
 require __DIR__.'/auth.php';

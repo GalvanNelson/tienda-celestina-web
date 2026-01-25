@@ -24,16 +24,18 @@ class InventarioSeeder extends Seeder
         UnidadMedida::truncate();
 
         // 1. CREAR UNIDADES DE MEDIDA
-        $uni = UnidadMedida::create(['nombre' => 'Unidad']);
-        $kg  = UnidadMedida::create(['nombre' => 'Kilogramo']);
-        $lt  = UnidadMedida::create(['nombre' => 'Litro']);
-        $pq  = UnidadMedida::create(['nombre' => 'Paquete']);
+        UnidadMedida::create(['nombre' => 'Unidad']);
+        UnidadMedida::create(['nombre' => 'Kilogramo']);
+        UnidadMedida::create(['nombre' => 'Litro']);
+        UnidadMedida::create(['nombre' => 'Paquete']);
 
         // 2. CREAR CATEGORÍAS
-        $cat_bebidas  = Categoria::create(['nombre' => 'Bebidas']);
-        $cat_lacteos  = Categoria::create(['nombre' => 'Lácteos']);        
-        $cat_limpieza = Categoria::create(['nombre' => 'Limpieza']);
-        $cat_carnicos = Categoria::create(['nombre' => 'Cárnicos y Embutidos']);
-        $cat_snacks   = Categoria::create(['nombre' => 'Snacks y Golosinas']);
+        Categoria::create(['nombre' => 'Bebidas']);
+        Categoria::create(['nombre' => 'Lácteos']);        
+        Categoria::create(['nombre' => 'Limpieza']);
+        Categoria::create(['nombre' => 'Cárnicos']);
+        Categoria::create(['nombre' => 'Snacks']);
+        Categoria::create(['nombre' => 'Embutidos']);
+        Categoria::create(['nombre' => 'Golosinas']);
     }
 }

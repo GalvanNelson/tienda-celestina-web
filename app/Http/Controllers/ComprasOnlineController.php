@@ -48,16 +48,21 @@ class ComprasOnlineController extends Controller
     {           
         $request->validate([
             'metodo_pago' => 'required|in:efectivo,qr',
-            'carrito' => 'required|array', // Asumiendo que envías el carrito desde Vue
+            'carrito' => 'required|array',
             'total' => 'required|numeric',
             'tipo_pago' => 'required|in:contado'
         ]);
         
         if ($request->tipo_pago === 'contado') {            
             $this->crearVentaPendiente($request);
-            return redirect()->route('compras.index')
+            return redirect()->route('cliente.compras.index')
             ->with('success', 'Venta pendiente creada exitosamente.');
         }
+    }
+
+    public function checkout()
+    {
+        return Inertia::render('Cliente/ComprasOnline/Checkout');
     }
 
     public function crearVentaPendiente ($request){

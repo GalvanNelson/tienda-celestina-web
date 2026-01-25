@@ -89,10 +89,10 @@ const closeSidebar = () => {
 
                  <template v-else-if="userRole === 'cliente'">
                     <p v-show="isSidebarOpen" class="text-[10px] uppercase font-bold text-gray-400 px-3 pt-4 pb-1 tracking-widest">Compras</p>  
-                    <NavLink :href="route('productos.index')" class="w-full">
+                    <NavLink :href="route('cliente.tienda')" class="w-full">
                         <div class="flex items-center">
                             <svg class="h-6 w-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                            <span v-show="isSidebarOpen" class="ms-3 font-medium">Productos</span>
+                            <span v-show="isSidebarOpen" class="ms-3 font-medium">Catalogo</span>
                         </div>
                     </NavLink>                
                 </template>

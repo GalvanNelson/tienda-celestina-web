@@ -5,6 +5,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import CarritoFlotante from '@/Pages/Cliente/Tienda/CarritoFlotante.vue'; // Asegura la ruta correcta
 
 const props = defineProps({ productos: Array });
+const placeholderImg = 'https://via.placeholder.com/400x300?text=Sin+imagen';
 const carrito = ref([]);
 const mostrarCarrito = ref(false);
 
@@ -44,7 +45,7 @@ const handleRemover = (index) => {
     guardarCarrito();
 };
 
-const irAPagar = () => router.visit(route('checkout.inicio'));
+const irAPagar = () => router.visit(route('cliente.checkout'));
 </script>
 
 <template>
@@ -59,10 +60,30 @@ const irAPagar = () => router.visit(route('checkout.inicio'));
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <div v-for="prod in productos" :key="prod.codigo_producto" class="bg-white rounded-lg shadow p-4 flex flex-col justify-between">
+                <div
+                    v-for="prod in productos"
+                    :key="prod.codigo_producto"
+                    class="bg-white rounded-lg shadow p-4 flex flex-col justify-between"
+                >
                     <div>
-                        <h3 class="font-bold text-lg">{{ prod.nombre_producto }}</h3>
-                        <p class="text-green-600 font-bold text-xl">{{ prod.precio_unitario }} Bs</p>
+                        <div class="mb-3 relative overflow-hidden rounded-lg bg-gray-50 h-40 flex items-center justify-center">
+                            <img
+                                v-if="prod.imagen_completa_url"
+                                :src="prod.imagen_completa_url"
+                                :alt="prod.nombre_producto"
+                                class="w-full h-full object-cover"
+                                loading="lazy"
+                            />
+                            <img
+                                v-else
+                                :src="placeholderImg"
+                                alt="Sin imagen"
+                                class="w-full h-full object-cover opacity-70"
+                                loading="lazy"
+                            />
+                        </div>
+                        <h3 class="font-bold text-lg">{{ prod.nombre_producto }}</h3>                        
+                        <p class="text-green-600 font-bold text-xl mt-1">{{ prod.precio_unitario }} Bs</p>
                     </div>
                     <button @click="agregarAlCarrito(prod)" class="mt-4 w-full bg-gray-800 text-white py-2 rounded hover:bg-black transition">
                         Agregar +
