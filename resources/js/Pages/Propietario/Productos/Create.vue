@@ -75,6 +75,10 @@ const submit = () => {
                                     <input type="radio" :value="2" v-model="form.grupo" class="text-indigo-600 border-gray-300 focus:ring-indigo-500" />
                                     <span>Bebidas</span>
                                 </label>
+                                <label class="inline-flex items-center gap-2">
+                                    <input type="radio" :value="3" v-model="form.grupo" class="text-indigo-600 border-gray-300 focus:ring-indigo-500" />
+                                    <span>Librería</span>
+                                </label>
                             </div>
                             <div v-if="form.errors.grupo" class="text-red-500 text-sm">{{ form.errors.grupo }}</div>
                         </div>

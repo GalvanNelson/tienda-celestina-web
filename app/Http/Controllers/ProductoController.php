@@ -58,12 +58,12 @@ class ProductoController extends Controller
         $request->validate([
             'nombre_producto' => 'required|string|max:255',
             'precio_unitario' => 'required|numeric|min:0',            
-            'grupo'           => 'required|string', // Campo requerido en migración
+            'grupo'           => 'required|integer', // Campo requerido en migración
             'categorias'      => 'required|array',   // Array de IDs para la tabla pivot
             'unidad_medida'   => 'required|integer', // ID único de unidad de medida
             'imagen_url'      => 'nullable|image|max:2048',
         ]);
-
+        dd($request->all());
        // dd($request->all());
 
         $nombreImagen = null;

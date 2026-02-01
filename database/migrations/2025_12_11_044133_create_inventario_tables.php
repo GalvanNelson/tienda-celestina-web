@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('nombre_producto');
             $table->string('imagen_url')->nullable();
             $table->decimal('precio_unitario', 10, 2);
-            $table->integer('grupo')->comment('tienda, bebida');
+            $table->integer('grupo')->comment('tienda, bebida', 'libreria');
             $table->foreignId('unidad_medida')->nullable()->constrained('unidad_medidas', 'codigo_unidad_medida');
             $table->timestamps();            
         });

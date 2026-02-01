@@ -45,7 +45,7 @@ const emit = defineEmits(['close']);
                                     <div>
                                         <label class="text-xs font-semibold uppercase text-gray-500">Grupo</label>
                                         <p class="text-gray-700 font-medium">
-                                            {{ producto.grupo == 1 ? 'Tienda' : 'Bebidas' }}
+                                            {{ producto.grupo == 1 ? 'Tienda' : (producto.grupo == 2 ? 'Bebidas' : 'Librería') }}
                                         </p>
                                     </div>
                                     

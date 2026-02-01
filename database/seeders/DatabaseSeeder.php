@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         // =================================================================
         $adminUser = User::create([
             'name' => 'Juan Propietario',
-            'email' => 'admin@tienda.com',
+            'email' => 'admin@goyita.com',
             'password' => Hash::make('password'), // La contraseña es 'password'
         ]);
 
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         // =================================================================
         $vendedorUser = User::create([
             'name' => 'Ana Vendedora',
-            'email' => 'vendedor@tienda.com',
+            'email' => 'vendedor@goyita.com',
             'password' => Hash::make('password'),
         ]);
 
@@ -60,7 +60,7 @@ class DatabaseSeeder extends Seeder
         // =================================================================
         $clienteUser = User::create([
             'name' => 'Carlos Cliente',
-            'email' => 'cliente@tienda.com',
+            'email' => 'cliente@goyita.com',
             'password' => Hash::make('password'),
         ]);
 
