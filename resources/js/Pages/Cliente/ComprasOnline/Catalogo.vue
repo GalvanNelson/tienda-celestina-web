@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { Head, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import CarritoFlotante from '@/Pages/Cliente/Tienda/CarritoFlotante.vue'; // Asegura la ruta correcta
+import CarritoFlotante from '@/Pages/Cliente/ComprasOnline/CarritoFlotante.vue'; // Asegura la ruta correcta
 
 const props = defineProps({ productos: Array });
 const placeholderImg = 'https://via.placeholder.com/400x300?text=Sin+imagen';

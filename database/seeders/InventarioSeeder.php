@@ -4,9 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Categoria;
-use App\Models\UnidadMedida;
-use App\Models\Producto;
+use App\Models\{Categoria, UnidadMedida, Producto};
 use Illuminate\Support\Facades\DB;
 
 class InventarioSeeder extends Seeder
@@ -37,5 +35,24 @@ class InventarioSeeder extends Seeder
         Categoria::create(['nombre' => 'Snacks']);
         Categoria::create(['nombre' => 'Embutidos']);
         Categoria::create(['nombre' => 'Golosinas']);
+
+        Producto::create([
+            'nombre_producto' => 'Leche Entera 1L',
+            'precio_unitario' => 1.20,            
+            'grupo' => 2, // Lácteos
+            'unidad_medida' => 1, // Unidad
+        ]);
+        Producto::create([
+            'nombre_producto' => 'Jugo de Naranja 500ml',
+            'precio_unitario' => 0.80,            
+            'grupo' => 1, // Bebidas
+            'unidad_medida' => 1, // Unidad
+        ]);
+        Producto::create([
+            'nombre_producto' => 'Detergente Líquido 1L',
+            'precio_unitario' => 3.50,            
+            'grupo' => 3, // Limpieza
+            'unidad_medida' => 1, // Unidad
+        ]);        
     }
 }

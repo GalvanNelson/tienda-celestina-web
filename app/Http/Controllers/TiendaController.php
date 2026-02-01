@@ -19,6 +19,6 @@ class TiendaController extends Controller
             return $producto;
         });
 
-        return Inertia::render('Cliente/Tienda/Catalogo', ['productos' => $productos]);
+        return Inertia::render('Cliente/ComprasOnline/Catalogo', ['productos' => $productos]);
     }
 }

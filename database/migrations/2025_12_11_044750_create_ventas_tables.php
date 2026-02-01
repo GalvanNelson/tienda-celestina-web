@@ -15,11 +15,11 @@ return new class extends Migration
         Schema::create('ventas', function (Blueprint $table) {
             $table->id('codigo_venta');            
             $table->foreignId('cliente')->constrained('clientes', 'codigo_cliente');
-            $table->foreignId('vendedor')->constrained('vendedores', 'codigo_vendedor');            
+            $table->foreignId('vendedor')->nullable()->constrained('vendedores', 'codigo_vendedor');
             $table->timestamp('fecha_venta');
             $table->decimal('monto_total', 10, 2);
-            $table->string('tipo_pago'); // 'contado', 'credito'
-            $table->string('estado_venta'); // 'pagado', 'pendiente'
+            $table->enum('tipo_pago', ['contado', 'credito']);
+            $table->enum('estado_venta', ['pendiente', 'pagado', 'enviado', 'entregado', 'cancelado'])->default('pendiente');
             $table->decimal('interes_aplicado', 5, 2)->default(0);
             $table->timestamps();
         });
@@ -50,12 +50,11 @@ return new class extends Migration
         // Pagos
         Schema::create('pagos', function (Blueprint $table) {
             $table->id('codigo_pago');
-            $table->foreignId('venta')->constrained('ventas', 'codigo_venta');
-            // Nullable porque al contado no hay cuota
+            $table->foreignId('venta')->nullable()->constrained('ventas', 'codigo_venta');            
             $table->foreignId('cuota')->nullable()->constrained('cuotas', 'codigo_cuota');
             $table->timestamp('fecha_pago');
             $table->decimal('monto_pagado', 10, 2);
-            $table->string('metodo_pago');
+            $table->enum('metodo_pago', ['efectivo', 'qr'])->default('efectivo');
             $table->timestamps();
         });
         

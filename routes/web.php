@@ -80,15 +80,14 @@ Route::middleware(['auth', 'verified', 'role:cliente'])
     Route::get('/mi-cuenta', function () {
         return Inertia::render('Cliente/Home');
     })->name('cliente.home');
-
-    // Lista, muestra y registra las compras online
-    Route::resource('/compras', ComprasOnlineController::class)->only(['index', 'show', 'store']); 
-
+    
     // Tienda Online
     Route::get('/catalogo', [TiendaController::class, 'index'])->name('cliente.tienda');
-    
-    // Checkout
+
     Route::get('/checkout', [ComprasOnlineController::class, 'checkout'])->name('cliente.checkout');
+    Route::post('/compras', [ComprasOnlineController::class, 'store'])->name('cliente.compras.store');
+    Route::get('/compras', [ComprasOnlineController::class, 'index'])->name('cliente.compras.index');
+    Route::get('/compras/{id}', [ComprasOnlineController::class, 'show'])->name('cliente.compras.show');
 });
 
 require __DIR__.'/auth.php';

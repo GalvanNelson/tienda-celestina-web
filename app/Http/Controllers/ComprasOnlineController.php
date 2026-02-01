@@ -45,18 +45,17 @@ class ComprasOnlineController extends Controller
     }
 
     public function store(Request $request)
-    {           
+    {                   
         $request->validate([
             'metodo_pago' => 'required|in:efectivo,qr',
             'carrito' => 'required|array',
             'total' => 'required|numeric',
-            'tipo_pago' => 'required|in:contado'
+            'tipo_pago' => 'required|in:contado, credito'
         ]);
         
         if ($request->tipo_pago === 'contado') {            
             $this->crearVentaPendiente($request);
-            return redirect()->route('cliente.compras.index')
-            ->with('success', 'Venta pendiente creada exitosamente.');
+            return redirect()->route('cliente.tienda')->with('success', 'Venta pendiente creada exitosamente.');
         }
     }
 
@@ -69,8 +68,7 @@ class ComprasOnlineController extends Controller
         DB::beginTransaction();
         try {
             $venta = Venta::create([
-                'cliente' => Auth::user()->cliente->codigo_cliente, // Asumiendo relación
-                'vendedor' => 1, // O un vendedor por defecto para web
+                'cliente' => Auth::user()->cliente->codigo_cliente, // Asumiendo relación                
                 'fecha_venta' => now(),
                 'monto_total' => $request->total,
                 'tipo_pago' => 'contado', 
@@ -95,26 +93,4 @@ class ComprasOnlineController extends Controller
         }
 
     }
-
-    // public function registrarDetalleVenta(){
-    //        $detallesAPI = []; 
-    //         $serial = 1;
-    //         foreach ($request->carrito as $item) {
-    //             DetalleVenta::create([
-    //                 'venta' => $venta->codigo_venta,
-    //                 'producto' => $item['id'],
-    //                 'precio_unitario' => $item['precio'],
-    //                 'cantidad' => $item['cantidad'],
-    //                 'subtotal' => $item['precio'] * $item['cantidad']
-    //             ]);
-    //             $detallesAPI[] = [
-    //                 'serial' => $serial++,
-    //                 'product' => $item['nombre'],
-    //                 'quantity' => $item['cantidad'],
-    //                 'price' => $item['precio'],
-    //                 'discount' => 0,
-    //                 'total' => $item['precio'] * $item['cantidad']
-    //             ];
-    //         }
-    // }
 }
