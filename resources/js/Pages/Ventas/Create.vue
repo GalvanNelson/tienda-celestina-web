@@ -33,31 +33,6 @@ const productosFiltrados = computed(() => {
     );
 });
 
-// Agregar producto (desde el catálogo)
-const agregarAlCarrito = (producto) => {
-    // Verificamos si ya existe en el carrito
-    const itemExistente = carrito.value.find(item => item.codigo_producto === producto.codigo_producto);
-
-    if (itemExistente) {
-        // Si existe, validamos stock y sumamos 1
-        if (itemExistente.cantidad < producto.stock) {
-            itemExistente.cantidad++;
-        } else {
-            alert("Has alcanzado el stock máximo disponible para este producto.");
-        }
-    } else {
-        // Si no existe, lo agregamos
-        carrito.value.push({
-            codigo_producto: producto.codigo_producto,
-            nombre: producto.nombre_producto,
-            precio: parseFloat(producto.precio_unitario),
-            imagen: producto.imagen,
-            cantidad: 1,
-            stock_max: producto.stock
-        });
-    }
-};
-
 // Modificar cantidad (desde el carrito)
 const cambiarCantidad = (index, delta) => {
     const item = carrito.value[index];

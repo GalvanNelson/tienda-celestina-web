@@ -20,17 +20,53 @@ use Illuminate\Support\Facades\Auth;
 
 class VentaController extends Controller
 {
+    public function index(){
+        $ventas = Venta::with(['clienteRelacion'])->orderBy('codigo_venta', 'desc')->get();
+
+        return Inertia::render('Vendedor/Ventas/Index', [
+            'ventas' => $ventas
+        ]);
+    }
     // Vista para crear nueva venta (El Punto de Venta)
-    public function create()
-    {
-        return Inertia::render('Ventas/Create', [        
-            'clientes' => Cliente::all(),
-            // Enviamos productos con stock positivo
-            'productos' => Producto::where('stock', '>', 0)
-                ->with('categoriaRelacion') // Opcional: Para mostrar la categoría
-                ->orderBy('nombre_producto')
-                ->get() 
-        ]);        
+    public function create(){
+        $productos = Producto::where('estado_producto', 'activo')->get();
+        $clientes = Cliente::where('estado_cliente', 'activo')->get();
+
+        return Inertia::render('Vendedor/Ventas/Create', [
+            'productos' => $productos,
+            'clientes' => $clientes
+        ]);       
+    }
+
+    public function show($id)
+    {        
+        $venta = Venta::with(['clienteRelacion', 'detalles.productoRelacion'])->findOrFail($id);
+        $cliente = $venta->clienteRelacion;
+
+        return Inertia::render('Vendedor/Ventas/Show', [
+            'venta' => $venta,
+            'cliente' => $cliente
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {        
+        $venta = Venta::findOrFail($id);
+        
+        // Solo permitir actualización si el estado es 'pendiente'
+        if ($venta->estado_venta !== 'pendiente') {
+            return redirect()->back()->with('error', 'Solo se pueden actualizar ventas en estado pendiente.');
+        }
+        
+        $request->validate([
+            'estado_venta' => 'required|in:pendiente,pagado,enviado,entregado,cancelado',
+        ]);
+        
+        $venta->update([
+            'estado_venta' => $request->estado_venta
+        ]);
+        
+        return redirect()->route('ventas.show', $id)->with('success', 'Estado de venta actualizado correctamente.');
     }
 
     // Procesar la Venta

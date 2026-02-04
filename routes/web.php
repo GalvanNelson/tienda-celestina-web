@@ -41,14 +41,13 @@ Route::middleware('auth')->group(function () {
 
 // ZONA PROPIETARIOS
 Route::middleware(['auth', 'verified', 'role:propietario'])
-    ->prefix('propietario') // <--- AGREGA ESTA LÍNEA
+    ->prefix('propietario')
     ->group(function () {
     
-    Route::get('/dashboard', function () { // Puedes simplificar esto si usas el prefijo
+    Route::get('/dashboard', function () {
         return Inertia::render('Propietario/Dashboard'); 
     })->name('propietario.dashboard');
-
-    // Ahora la URL será /propietario/productos
+    
     Route::resource('productos', ProductoController::class);
     Route::resource('categorias', CategoriaController::class);
     Route::resource('unidades', UnidadMedidaController::class);
@@ -59,7 +58,7 @@ Route::middleware(['auth', 'verified', 'role:propietario'])
 // ZONA VENTAS (Vendedores y Propietarios)
 // Accesible si role_type es 'vendedor' O 'propietario'
 Route::middleware(['auth', 'verified', 'role:propietario,vendedor'])
-->prefix('vendedor') // <--- AGREGA ESTA LÍNEA
+->prefix('vendedor')
 ->group(function () {
 
     Route::get('/dashboard', function () { // Puedes simplificar esto si usas el prefijo
@@ -68,7 +67,7 @@ Route::middleware(['auth', 'verified', 'role:propietario,vendedor'])
     
     // Aquí irían rutas para ver productos, clientes, etc.
     // Esto busca create() y store() en tu controlador
-    Route::resource('ventas', VentaController::class)->only(['create', 'store']);  
+    Route::resource('ventas', VentaController::class)->only(['create', 'store', 'index', 'show', 'update']);  
 });
 
 // ZONA CLIENTES

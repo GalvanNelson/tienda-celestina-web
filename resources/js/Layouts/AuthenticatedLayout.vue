@@ -74,7 +74,23 @@ const closeSidebar = () => {
                             </svg>
                             <span v-show="isSidebarOpen" class="ms-3 font-medium">Unidad de medida</span>
                         </div>
-                    </NavLink>                 
+                    </NavLink>
+                    <NavLink :href="route('clientes.index')" class="w-full">
+                        <div class="flex items-center">
+                            <svg class="h-6 w-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-4-4h-1m-4 6v-2a4 4 0 00-4-4H4a4 4 0 00-4 4v2m11-10a4 4 0 11-8 0 4 4 0 018 0m6-3a4 4 0 11-8 0 4 4 0 018 0"/>
+                            </svg>
+                            <span v-show="isSidebarOpen" class="ms-3 font-medium">Clientes</span>
+                        </div>
+                    </NavLink>
+                    <NavLink :href="route('vendedores.index')" class="w-full">
+                        <div class="flex items-center">
+                            <svg class="h-6 w-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6a2 2 0 114 0v2h5a1 1 0 011 1v3H4V9a1 1 0 011-1h5V6zm10 6v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6"/>
+                            </svg>
+                            <span v-show="isSidebarOpen" class="ms-3 font-medium">Vendedores</span>
+                        </div>
+                    </NavLink>
                 </template>
 
                  <template v-else-if="userRole === 'vendedor'">
