@@ -62,9 +62,7 @@ class ProductoController extends Controller
             'categorias'      => 'required|array',   // Array de IDs para la tabla pivot
             'unidad_medida'   => 'required|integer', // ID único de unidad de medida
             'imagen_url'      => 'nullable|image|max:2048',
-        ]);
-        dd($request->all());
-       // dd($request->all());
+        ]);        
 
         $nombreImagen = null;
         if ($request->hasFile('imagen_url')) {
